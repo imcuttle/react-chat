@@ -1,8 +1,11 @@
 import React from 'react'
 import classname from 'classname'
+import fetch from 'isomorphic-fetch'
+import qs from 'querystring'
 
 import Message from './Message'
 import '../css/base.less'
+import CONST from '../common/const'
 
 class App extends React.Component {
 
@@ -34,9 +37,15 @@ class App extends React.Component {
         mini: false,
         tipText: '',
         msgs: [{
+            name: 'Robot',
+            time: new Date().toLocaleString(),
+            content: CONST.DEFAULT_MSG,
+            html: true,
+            self: false
+        },{
             name: 'Alexanssder Pierce',
             time: '23 Jan 2:00 pm',
-            content: "Is this template really for free? That's unbelievable!",
+            content: "Is this ",
             self: false
         },{
             name: 'Sarah Bullock',
@@ -58,7 +67,7 @@ class App extends React.Component {
 
     send() {
         const {mini, sendDisabled, msgs} = this.state;
-        const val = this.refs.ipt.value;
+        let val = this.refs.ipt.value;
         if(val.trim() === '') {
             this.setTip('please input message.')
             return;
@@ -66,20 +75,48 @@ class App extends React.Component {
         if(sendDisabled === true) {
             return;
         }
-        this.refs.ipt.value = '';
-        this.setState({
-            // sendDisabled: true,
-            msgs: msgs.concat({
-                name: 'Sarah Bullock',
-                time: "23 Jan 2:05 pm",
-                content: val,
-                appendAnimation: true,
-                doneCallback: () => {
-                    this.refs.childContent.scrollTop = this.refs.childContent.scrollHeight;
-                },
-                self: true
-            })
-        });
+
+        const sendTime = new Date().toLocaleString();
+        this.setState({sendDisabled: true});
+        var url = "/api/send";
+        if(CONST.EMAILCMD_REG.test(val.trim())) {
+            url = "/api/setemail";
+            val = RegExp.$1;
+        } else if(CONST.NAMECMD_REG.test(val.trim())) {
+            url = "/api/setname";
+            val = RegExp.$1;
+        }
+        fetch(url, {method: 'POST', credentials: 'include', headers: {"Content-Type": "application/x-www-form-urlencoded"}, body: qs.stringify({v: val})})
+        .then(res => res.json())
+        .then(json => {
+            if(json.code === 200) {
+                this.refs.ipt.value = '';
+                const myName = json.result.selfName;
+                delete json.result.selfName;
+                this.setState({
+                    sendDisabled: false,
+                    msgs: msgs.concat([{
+                        content: val,
+                        name: myName,
+                        time: sendTime,
+                        appendAnimation: true,
+                        doneCallback: () => {
+                            this.refs.childContent.scrollTop = this.refs.childContent.scrollHeight;
+                        },
+                        self: true
+                    }, {
+                        ...json.result,
+                        appendAnimation: true,
+                        doneCallback: () => {
+                            this.refs.childContent.scrollTop = this.refs.childContent.scrollHeight;
+                        },
+                        self: false
+                    }])
+                });
+            }
+        })
+
+        
     }
 
     login() {

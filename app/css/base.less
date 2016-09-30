@@ -17,6 +17,7 @@
 .clearfix:after {
 	display: table;
 	content: " ";
+	clear: both;
 }
 
 .icon {
@@ -129,14 +130,17 @@
 					}
 				}
 				.message {
+					text-align: right;
 					.avatar {
 						float: right;
 					}
 					.say-what {
 						margin-left: auto;
-						margin-right: 50px;
+						margin-right: 10px;
 						background-color: @baseColor;
 						color: white;
+						margin-top: auto;
+						float: right;
 
 						&::after {
 						    right: auto;
@@ -150,7 +154,7 @@
 			}
 
 			.message {
-
+				text-align: left;
 				.avatar {
 					border-radius: 50%;
 					height: 32px;
@@ -159,16 +163,22 @@
 					float: left;
 				}
 				.say-what {
-					display: block;
-					margin-left: 50px;
-					padding: 6px 10px; 
+					display: inline-block;
+					margin-right: auto;
+					margin-left: 10px;
+					padding: 6px 10px;
+
 					border-radius: 6px;
 					position: relative;
+					float: left;
+
+					word-break: break-all;
 					background-color: @otherColor;
 					font-size: 14px;
 					font-weight: normal;
 					line-height: 1.4;
 
+					max-width: 200px;
 					color: black;
 
 					
