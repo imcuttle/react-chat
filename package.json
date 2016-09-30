@@ -1,7 +1,7 @@
 {
   "name": "react-chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "- Get Start ```sh npm install npm run dev ```",
   "main": "index.js",
   "scripts": {
     "dev": "node index.js && open http://localhost:8080/webpack-dev-server/",
@@ -33,5 +33,13 @@
   },
   "dependencies": {
     "node-wit": "^4.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyuyc/react-chat.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moyuyc/react-chat/issues"
+  },
+  "homepage": "https://github.com/moyuyc/react-chat#readme"
 }
