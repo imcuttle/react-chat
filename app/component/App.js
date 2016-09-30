@@ -174,7 +174,7 @@ class App extends React.Component {
         			</div>
         		</h1>
                 <div ref="content" className="main-content">
-                {!logined ? this.renderWrap() : null}
+                {/*!logined ? this.renderWrap() : null*/}
                 <div ref="childContent" className="content">
                     {
                         msgs.map((x,i) => <Message {...x} key={i} />)
