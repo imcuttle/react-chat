@@ -2,8 +2,14 @@
 
 - Get Start
 ```sh
+# dev mode
 npm install
 npm run dev
+
+# production
+npm install -g webpack
+webpack
+open build/index.html
 ```
 
 - Directory Tree
