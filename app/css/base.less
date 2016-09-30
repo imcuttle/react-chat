@@ -1,0 +1,275 @@
+@import "./mixin.less";
+
+@baseColor: #3c8dbc;
+@otherColor: #d2d6de;
+@iconColor: #606c84;
+
+* {
+	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+	margin: 0;
+	padding: 0;
+}
+
+.right {
+	float: right;
+}
+
+.clearfix:after {
+	display: table;
+	content: " ";
+}
+
+.icon {
+	cursor: pointer;
+	font-size: 10px;
+	vertical-align: middle;
+	text-align: center;
+	color: @iconColor;
+}
+
+@keyframes fadeOut{
+	0% {
+		display: inline-block;
+		opacity: 1;
+	}
+	100% {
+		display: inline-block;
+		opacity: 0;
+	}
+}
+@-webkit-keyframes fadeOut{
+	0% {
+		display: inline-block;
+		opacity: 1;
+	}
+	100% {
+		display: inline-block;
+		opacity: 0;
+	}
+}
+
+@keyframes fadeIn{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+@-webkit-keyframes fadeIn{
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.chat-container {
+	position: fixed;
+	bottom: 0px;
+	right: 0px;
+
+	width: 280px;
+	max-height: 400px;
+
+	border-radius: 4px;
+
+	border: 1px solid #ddd;
+	border-top: 4px solid @baseColor;
+
+	.header {
+		padding: 6px 10px;
+		font-size: 20px;
+		font-weight: bolder;
+
+		border-bottom: 1px solid #eee;
+		box-sizing: border-box;
+	}
+	.main-content {
+		position: relative;
+		.transition(height .5s ease;);
+	}
+	.content {
+		overflow-y: scroll;
+		margin-right: -100px;
+    	padding-right: 100px;
+
+		position: relative;
+		
+		height: 310px;
+
+		.message-item {
+			margin: 10px 8px;
+
+			.information {
+				font-size: 12px;
+				margin-bottom: 4px;
+				.name {
+					font-weight: 600;
+				}
+				.time {
+					color: #bbb;
+					float: right;
+				}
+			}
+			&.append-animate {
+				animation: fadeIn 600ms ease-in-out;
+			}
+
+			&.self  {
+				.information {
+					.name {
+						font-weight: 600;
+						float: right;
+					}
+					.time {
+						color: #bbb;
+						float: none;
+					}
+				}
+				.message {
+					.avatar {
+						float: right;
+					}
+					.say-what {
+						margin-left: auto;
+						margin-right: 50px;
+						background-color: @baseColor;
+						color: white;
+
+						&::after {
+						    right: auto;
+						    left: 100%;
+						    border-right-color: transparent;
+						    border-left-color: @baseColor;
+						    
+						}
+					}
+				}
+			}
+
+			.message {
+
+				.avatar {
+					border-radius: 50%;
+					height: 32px;
+					width: 32px;
+
+					float: left;
+				}
+				.say-what {
+					display: block;
+					margin-left: 50px;
+					padding: 6px 10px; 
+					border-radius: 6px;
+					position: relative;
+					background-color: @otherColor;
+					font-size: 14px;
+					font-weight: normal;
+					line-height: 1.4;
+
+					color: black;
+
+					
+					&::after {
+					    position: absolute;
+					    right: 100%;
+					    top: 12px;
+					    border: 4px solid transparent;
+					    border-right-color: @otherColor;
+					    content: ' ';
+					    height: 0;
+					    width: 0;
+					}
+				}
+			}
+		}
+	}
+	.bottom-bar {
+
+	}
+	.wrap {
+		position: absolute;
+		z-index: 100;
+		background-color: rgba(255, 255, 255, .7);
+		bottom: 0;
+		top: 0;
+		left: 0;
+		right: 0;
+		.inputgroup {
+			margin-top: 50%;
+		}
+	}
+	.tip {
+		position: absolute;
+		z-index: 200;
+		background-color: darken(@baseColor, 2%);
+		color: white;
+		border-radius: 4px;
+		padding: 8px 12px;
+		white-space: nowrap;
+		top: 30px;
+		left: 50%;
+		.translate(-50%, 0);
+		margin: auto;
+		box-shadow: 2px 3px 5px #ccc;
+		/*animation: fadeOut 1s ease-in-out;*/
+	}
+	.inputgroup {
+			@iptPadding: 4px;
+	    	display: table;
+    		border-collapse: separate;
+    		
+    		border-spacing: 2*@iptPadding + 2  5px;
+    		width: 100%;
+
+			input {
+				font-size: 14px;
+				border-radius: 4px 0 0 4px;
+				display: block;
+				height: 24px;
+				width: 100%;
+				padding: 2px @iptPadding;
+				border: 1px solid #ccc;
+				.transition(border-color ease-in-out .15s,box-shadow ease-in-out .15s;);
+
+				&:focus {
+					outline: none;
+					border-color: darken(@baseColor, 1%);
+					box-shadow: inset 0 1px 1px rgba(0,0,0, .075),0 0 8px fade(@baseColor, 60%);
+				}
+				&[disabled] {
+					cursor: not-allowed;
+					background-color: #ddd;
+					border-color: darken(#ddd, 6%);
+				}
+			}
+			.addon {
+				outline: none;
+				font-size: 14px;
+				border-radius: 0 4px 4px 0;
+				background-color: @baseColor;
+				color: white;
+				display: table-cell;
+				text-align: center;
+				cursor: pointer;
+				user-select: none;
+				-webkit-user-select: none;
+				padding: 2px 5px;
+				border: 1px solid darken(@baseColor, 2%);
+
+				&:hover, &:active, &:hover {
+					border-color: darken(@baseColor, 6%);
+					background-color: darken(@baseColor, 8%);
+				}
+				&.disabled {
+					cursor: not-allowed;
+					background-color: #bbb;
+					border-color: darken(#bbb, 6%);
+				}
+			}
+		}
+}
+
+
