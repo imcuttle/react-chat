@@ -1,7 +1,7 @@
 {
-  "name": "react-chat",
+  "name": "react-robot-chat",
   "version": "1.0.0",
-  "description": "- Get Start ```sh npm install npm run dev ```",
+  "description": "React Robot Chat",
   "main": "index.js",
   "scripts": {
     "dev": "node index.js && open http://localhost:8080/webpack-dev-server/",
