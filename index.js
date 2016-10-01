@@ -3,9 +3,14 @@ var webpackDevServer = require('webpack-dev-server');
 var webpack = require('webpack');
 var session = require('express-session');
 var bodyParser = require('body-parser');
+var crypto = require('crypto');
+function md5 (text) {
+  return crypto.createHash('md5').update(text).digest('hex');
+};
 
 var config = require("./webpack.config.js");
 var sendMail = require("./smtp");
+var api = require("./api");
 
 config.entry.unshift("webpack-dev-server/client?http://localhost:8080/", "webpack/hot/dev-server");
 
@@ -63,23 +68,37 @@ var server = new webpackDevServer(compiler, {
       var time = new Date().toLocaleString();
       req.session.msgNum = parseInt(num) + 1;
 
-      res.json({ code: 200, result: {
-        content: `your content: ${content}.(${num})`,
-        time: time,
-        name: 'Robot',
-        selfName: req.session.name || 'Moyu'
-      }})
+      var md5Str = md5(req.sessionID)
+      console.log(md5Str)
+      api(content, md5Str)
+      .then(json => {
+        url = json.url
 
-      var email = req.session.email;
-      if(email) {
-        sendMail("smtp.qq.com", "492899414@qq.com", "jrpzcdbebynzcabf", email,
-         'React-Chat', '(React-Chat) your message.',
-          `<center><h1>You Send The Message <em>${content}</em> At ${time}.</h1></center>`,
-          () => {
-            console.log('socket closed');
-          }
-        )
-      }
+        res.json({ code: 200, result: {
+          code: json.code,
+          content: json.text,
+          time: time,
+          url: url,
+          name: 'Robot',
+          list: json.list,
+          selfName: req.session.name || 'Moyu'
+        }})
+
+        var email = req.session.email;
+        if(email) {
+          sendMail("smtp.qq.com", "492899414@qq.com", "jrpzcdbebynzcabf", email,
+           'React-Chat', '(React-Chat) your message.',
+            `<center><h1>You Send The Message <em>${content}</em> At ${time}.</h1></center>`
+            +`<h3>Server Return: </h3>`
+            +`<pre><code>${JSON.stringify(json, null, 4)}</code></pre>`,
+            () => {
+              console.log('socket closed');
+            }
+          )
+        }
+      })
+
+      
     })
 
   },

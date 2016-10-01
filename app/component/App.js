@@ -42,16 +42,6 @@ class App extends React.Component {
             content: CONST.DEFAULT_MSG,
             html: true,
             self: false
-        },{
-            name: 'Alexanssder Pierce',
-            time: '23 Jan 2:00 pm',
-            content: "Is this ",
-            self: false
-        },{
-            name: 'Sarah Bullock',
-            time: "23 Jan 2:05 pm",
-            content: "You better believe it!",
-            self: true
         }]
 	}
 	static propTypes = {
