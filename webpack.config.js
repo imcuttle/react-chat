@@ -1,8 +1,11 @@
 
 var path = require('path');
 var webpack = require('webpack');
-var node_module_dir = path.resolve(__dirname,'node_module');
-module.exports = {
+var node_module_dir = path.resolve(__dirname, 'node_module');
+var minimize = process.argv.indexOf('--mini') !== -1;
+
+
+var config = {
     entry: {
         app: [
             'babel-polyfill',
@@ -15,11 +18,11 @@ module.exports = {
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
         //new webpack.optimize.CommonsChunkPlugin('react', 'react.js')
     ],
-    module:{
-        loaders:[
+    module: {
+        loaders: [
             {
                 loader: "babel-loader",   //加载babel模块
                 include:[
@@ -51,3 +54,8 @@ module.exports = {
         ]
     }
 }
+if(minimize) {
+    config.plugins = new webpack.optimize.UglifyJsPlugin()
+}
+
+module.exports = config;

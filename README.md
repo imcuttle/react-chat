@@ -1,6 +1,7 @@
 # React-Chat
 
 - See
+
 ![img](./chat-ui.png)
 
 - Get Start
@@ -11,7 +12,7 @@ npm run dev
 
 # production
 npm install -g webpack
-webpack
+npm run build
 open build/index.html
 ```
 
