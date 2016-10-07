@@ -3,14 +3,15 @@ var path = require('path');
 var webpack = require('webpack');
 var node_module_dir = path.resolve(__dirname,'node_module');
 module.exports = {
-    entry: [
-        
-        'babel-polyfill',
-        path.resolve(__dirname, 'app/main.js')
-    ],
+    entry: {
+        app: [
+            'babel-polyfill',
+            path.resolve(__dirname, 'app/main.js')
+        ]
+    },
     output:{
         path: path.resolve(__dirname, 'build'),
-        filename: 'main.js'
+        filename: '[name].main.js'
     },
     plugins: [
         new webpack.optimize.OccurrenceOrderPlugin(),
